@@ -12,7 +12,7 @@ GROUP_MAX = int(os.getenv("GROUP_MAX", "200"))
 TIME_BETWEEN_CLIENTS_MIN_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MIN", "10"))
 TIME_BETWEEN_CLIENTS_MAX_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MAX", "20"))
 
-NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "100"))
+NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "10"))
 
 
 async def place_single_order(client_id: str) -> None:
@@ -28,7 +28,7 @@ async def place_single_order(client_id: str) -> None:
 async def main() -> None:
     all_order_tasks = []
     for c in range(NUM_CLIENTS_KINDS_SERVED):
-        who_next_client = random.randint(0, 1)
+        who_next_client = random.randint(0, 2)
         if who_next_client == 0:
             print("Single client comes for the caffe")
             task = asyncio.create_task(place_single_order(f"Normal_{c}"))
@@ -46,7 +46,7 @@ async def main() -> None:
                 task = asyncio.create_task(place_single_order(f"Delusional_{c}_{i}"))
                 all_order_tasks.append(task)
         time_till_next_client = random.randint(TIME_BETWEEN_CLIENTS_MIN_SEC, TIME_BETWEEN_CLIENTS_MAX_SEC)
-        print(f"Waiting for the next client for {time_till_next_client}...")
+        print(f"Waiting for the next client for {time_till_next_client}s ...")
         await asyncio.sleep(time_till_next_client)
     print("Awaiting all tasks...")
     for task in all_order_tasks:

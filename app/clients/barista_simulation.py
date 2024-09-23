@@ -20,11 +20,15 @@ async def brew_coffee(worker_id: int) -> None:
                     print(f"Worker {worker_id} started: {json_response}")
                 else:
                     print(f"Worker {worker_id} received error: {response.status}")
+                    if response.status == 404:
+                        # very simple backoff - if no new orders to process, sleep for a while before next request
+                        await asyncio.sleep(1)
                     continue
 
             # wait for coffe to brew
             order_id = json_response["order_id"]
             caffe_brew_time = random.randint(BREW_TIME_MIN, BREW_TIME_MAX)
+            print(f"Worker {worker_id} brewing coffe for {caffe_brew_time}s ...")
             await asyncio.sleep(caffe_brew_time)
 
             async with session.post(urljoin(BASE_SERVER_URL, f"/finish/?order_id={order_id}")) as resp:
