@@ -19,15 +19,15 @@ class OrderType(str, enum.Enum):
 
 
 class Order:
-    def __init__(self, order_type: OrderType, order_id: str):
+    def __init__(self, order_type: OrderType, order_id: str) -> None:
         self.event = asyncio.Event()
         self.type = order_type
         self.order_id = order_id
         self.status = OrderStatus.IN_PREPARATION
 
-    async def wait(self):
+    async def wait(self) -> None:
         await self.event.wait()
 
-    def set_ready(self):
+    def set_ready(self) -> None:
         self.status = OrderStatus.FINISHED
         self.event.set()

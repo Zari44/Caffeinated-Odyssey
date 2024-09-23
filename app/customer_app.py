@@ -11,7 +11,7 @@ customer_app = FastAPI()
 
 
 @customer_app.post("/order/")
-async def order():
+async def order() -> JSONResponse:
     new_order = Order(order_type=OrderType.AMERICANO, order_id=str(uuid.uuid4()))
     logger.info(f"New order placed. Order id = {new_order.order_id}")
     orders_queue.put(new_order.order_id)

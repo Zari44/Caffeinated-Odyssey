@@ -5,7 +5,7 @@ from common import Order
 
 # abstraction on any persistent storage that could be used in production system
 class OrdersStorage:
-    def __init__(self):
+    def __init__(self) -> None:
         self.orders: dict[str, Order] = {}
 
     def get(self, order_id: str) -> Optional[Order]:

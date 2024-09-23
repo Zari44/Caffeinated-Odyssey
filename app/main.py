@@ -6,7 +6,7 @@ from barista_app import barista_app
 from customer_app import customer_app
 
 
-async def start_servers():
+async def start_servers() -> None:
     # since the server is served to the internet through nginx - it is safe to host it on 0.0.0.0
     config_client = Config(app=customer_app, host="0.0.0.0", port=8000)
     config_worker = Config(app=barista_app, host="0.0.0.0", port=8001)

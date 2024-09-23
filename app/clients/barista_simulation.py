@@ -11,7 +11,7 @@ BREW_TIME_MIN = int(os.getenv("BREW_TIME_MIN", "30"))
 BREW_TIME_MAX = int(os.getenv("BREW_TIME_MAX", "60"))
 
 
-async def brew_coffee(worker_id: int):
+async def brew_coffee(worker_id: int) -> None:
     async with aiohttp.ClientSession() as session:
         while True:
             async with session.get(urljoin(BASE_SERVER_URL, "/start/")) as response:
@@ -34,7 +34,7 @@ async def brew_coffee(worker_id: int):
                     print(f"Error finishing order {order_id}: {resp.status}")
 
 
-async def simulate_workers(num_workers):
+async def simulate_workers(num_workers: int) -> None:
     tasks = []
     for i in range(num_workers):
         print(f"Creating worker {i}")

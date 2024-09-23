@@ -9,7 +9,7 @@ barista_app = FastAPI()
 
 
 @barista_app.get("/start/")
-async def start():
+async def start() -> JSONResponse:
     if orders_queue.empty():
         raise HTTPException(status_code=404, detail="No pending orders to prepare")
     order_id = await orders_queue.pop()
@@ -17,7 +17,7 @@ async def start():
 
 
 @barista_app.post("/finish/")
-async def finish(order_id: str):
+async def finish(order_id: str) -> JSONResponse:
     # when solving this problem I tried to achieve the level of abstraction that would allow just for attaching
     # some persistent storage without the change of the application logic - however not removing orders
     # from memory storage might result in memory overflow in this case

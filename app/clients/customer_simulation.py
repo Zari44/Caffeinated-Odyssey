@@ -15,7 +15,7 @@ TIME_BETWEEN_CLIENTS_MAX_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MAX", "20"))
 NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "100"))
 
 
-async def place_single_order(client_id):
+async def place_single_order(client_id: str) -> None:
     print(f"Client {client_id} placing an order.")
     async with aiohttp.ClientSession() as session:
         async with session.post(urljoin(BASE_SERVER_URL, "order")) as response:
@@ -25,7 +25,7 @@ async def place_single_order(client_id):
                 print(f"Client {client_id} received error: {response.status}")
 
 
-async def main():
+async def main() -> None:
     all_order_tasks = []
     for c in range(NUM_CLIENTS_KINDS_SERVED):
         who_next_client = random.randint(0, 1)
