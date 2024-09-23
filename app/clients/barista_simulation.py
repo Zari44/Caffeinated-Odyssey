@@ -1,30 +1,32 @@
 import asyncio
 import os
+import random
 from urllib.parse import urljoin
 
 import aiohttp
-from aiohttp import TCPConnector
 
 BASE_SERVER_URL = os.getenv("BASE_SERVER_URL", "http://localhost")
 NUM_WORKERS = int(os.getenv("NUM_WORKERS", "10"))
+BREW_TIME_MIN = int(os.getenv("BREW_TIME_MIN", "30"))
+BREW_TIME_MAX = int(os.getenv("BREW_TIME_MAX", "60"))
 
 
 async def brew_coffee(worker_id: int):
-    connector = TCPConnector(limit_per_host=NUM_WORKERS)
-    async with aiohttp.ClientSession(connector=connector) as session:
+    async with aiohttp.ClientSession() as session:
         while True:
-            print(f"Worker {worker_id} getting a new task to work on")
             async with session.get(urljoin(BASE_SERVER_URL, "/start/")) as response:
                 if response.status == 200:
                     json_response = await response.json()
                     print(f"Worker {worker_id} started: {json_response}")
                 else:
-                    print(f"Worker{worker_id} received error: {response.status}")
+                    print(f"Worker {worker_id} received error: {response.status}")
                     continue
-            # wait for cofee to brew
+
+            # wait for coffe to brew
             order_id = json_response["order_id"]
-            await asyncio.sleep(1)
-            # Automatically call finish endpoint
+            caffe_brew_time = random.randint(BREW_TIME_MIN, BREW_TIME_MAX)
+            await asyncio.sleep(caffe_brew_time)
+
             async with session.post(urljoin(BASE_SERVER_URL, f"/finish/?order_id={order_id}")) as resp:
                 if resp.status == 200:
                     print(f"Worker {worker_id} finished brewing coffee")
@@ -35,9 +37,8 @@ async def brew_coffee(worker_id: int):
 async def simulate_workers(num_workers):
     tasks = []
     for i in range(num_workers):
-        print(f"Creating task {i}")
+        print(f"Creating worker {i}")
         tasks.append(brew_coffee(i))
-        # await asyncio.sleep(1)
     await asyncio.gather(*tasks)
 
 

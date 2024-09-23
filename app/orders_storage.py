@@ -3,6 +3,7 @@ from typing import Optional
 from common import Order
 
 
+# abstraction on any persistent storage that could be used in production system
 class OrdersStorage:
     def __init__(self):
         self.orders: dict[str, Order] = {}
