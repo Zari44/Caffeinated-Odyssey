@@ -14,7 +14,7 @@ GROUP_MAX = int(os.getenv("GROUP_MAX", "200"))
 TIME_BETWEEN_CLIENTS_MIN_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MIN", "1"))
 TIME_BETWEEN_CLIENTS_MAX_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MAX", "5"))
 
-NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "2"))
+NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "20"))
 
 
 async def place_single_order(client_id: str) -> None:
@@ -30,7 +30,7 @@ async def place_single_order(client_id: str) -> None:
 async def main() -> None:
     all_order_tasks = []
     for c in range(NUM_CLIENTS_KINDS_SERVED):
-        who_next_client = random.randint(2, 2)
+        who_next_client = random.randint(0, 2)
         if who_next_client == 0:
             print("Single client comes for the coffee")
             task = asyncio.create_task(place_single_order(f"Normal_{c}"))

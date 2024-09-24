@@ -68,6 +68,14 @@ Details on how to set up the development environment are described in one of the
 2. Activate venv if not activated: `. ~/.virtualenvs/coffee/bin/activate`
 3. Install requirements listed in the repo: `pip install -r ./app/requirements_dev.txt`
 
+### Run server locally
+
+In order to run server locally:
+
+1. Ensure that [Docker is installed](https://docs.docker.com/engine/install/) on your system
+2. Navigate to the repository's root directory and execute: `docker compose up --build`
+3. Once the containers are up, the server will be accessible at localhost:80
+
 Then you would be able to run the customer and barista scripts:
 - `BASE_SERVER_URL=<SERVER_URL> python ./app/client/customer_simulation.py`
 - `BASE_SERVER_URL=<SERVER_URL> python ./app/client/barista_simulation.py`
@@ -82,26 +90,18 @@ In order to run ruff and mypy one can run:
 - `ruff check . --fix` -  runs configured linters and applies fixes automatically
 - `mypy .` - performs static type checking for Python
 
-## Run server locally
-
-In order to run server locally:
-
-1. Ensure that [Docker is installed](https://docs.docker.com/engine/install/) on your system
-2. Navigate to the repository's root directory and execute: `docker compose up --build` 
-3. Once the containers are up, the server will be accessible at localhost:80
-
-
 ## Limitations of the solution
 
 The solution is, of course, not how the production grade server ready. 
 It lucks some of the functionality that I decided that is beyond the scope of this task,
 but would be required for a production server:
+- SSL certification and HTTPS traffic to ensure secure communication between server and client 
 - Persistent storage for orders (e.g. PostgreSQL, MySQL etc.) 
 - Server authorization (e.g. with the use of JWTs)
 - Monitoring and alerting for server health and performance (e.g. prometheus and grafana)
 - Optionally, a message broker (e.g. Kafka, RabbitMQ)
 - Tests (e.g. pytest)
-- Additionally, it would be beneficial to have all resources and infrastructure defined as code (IaaC) (e.g. terraform) 
+- Additionally, it would be beneficial to have all resources and infrastructure defined as code (IaC) (e.g. terraform) 
 
 
 
