@@ -5,6 +5,8 @@ from urllib.parse import urljoin
 
 import aiohttp
 
+# hint: server running on http://ec2-16-171-38-125.eu-north-1.compute.amazonaws.com
+
 BASE_SERVER_URL = os.getenv("BASE_SERVER_URL", "http://localhost")
 GROUP_MIN = int(os.getenv("GROUP_MIN", "100"))
 GROUP_MAX = int(os.getenv("GROUP_MAX", "200"))
