@@ -9,10 +9,10 @@ BASE_SERVER_URL = os.getenv("BASE_SERVER_URL", "http://localhost")
 GROUP_MIN = int(os.getenv("GROUP_MIN", "100"))
 GROUP_MAX = int(os.getenv("GROUP_MAX", "200"))
 
-TIME_BETWEEN_CLIENTS_MIN_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MIN", "10"))
-TIME_BETWEEN_CLIENTS_MAX_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MAX", "20"))
+TIME_BETWEEN_CLIENTS_MIN_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MIN", "1"))
+TIME_BETWEEN_CLIENTS_MAX_SEC = int(os.getenv("TIME_BETWEEN_CLIENTS_MAX", "5"))
 
-NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "10"))
+NUM_CLIENTS_KINDS_SERVED = int(os.getenv("NUM_CLIENTS_KINDS_SERVED", "2"))
 
 
 async def place_single_order(client_id: str) -> None:
@@ -28,20 +28,20 @@ async def place_single_order(client_id: str) -> None:
 async def main() -> None:
     all_order_tasks = []
     for c in range(NUM_CLIENTS_KINDS_SERVED):
-        who_next_client = random.randint(0, 2)
+        who_next_client = random.randint(2, 2)
         if who_next_client == 0:
-            print("Single client comes for the caffe")
+            print("Single client comes for the coffee")
             task = asyncio.create_task(place_single_order(f"Normal_{c}"))
             all_order_tasks.append(task)
         elif who_next_client == 1:
             group_num = random.randint(GROUP_MIN, GROUP_MAX)
-            print(f"Group size: {group_num} come for the caffe")
+            print(f"Group size: {group_num} come for the coffee")
             for i in range(group_num):
                 task = asyncio.create_task(place_single_order(f"Group_{c}_{i}"))
                 all_order_tasks.append(task)
         elif who_next_client == 2:
             num_orders = random.randint(1000, 5000)
-            print(f"Delusional client comes for the caffe and orders: {num_orders}")
+            print(f"Delusional client comes for the coffee and orders: {num_orders}")
             for i in range(num_orders):
                 task = asyncio.create_task(place_single_order(f"Delusional_{c}_{i}"))
                 all_order_tasks.append(task)
@@ -55,4 +55,5 @@ async def main() -> None:
 
 # Run the asyncio event loop
 if __name__ == "__main__":
+    print(f"Client sending requests to: {BASE_SERVER_URL}")
     asyncio.run(main())

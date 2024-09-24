@@ -28,7 +28,7 @@ async def brew_coffee(worker_id: int) -> None:
             # wait for coffe to brew
             order_id = json_response["order_id"]
             caffe_brew_time = random.randint(BREW_TIME_MIN, BREW_TIME_MAX)
-            print(f"Worker {worker_id} brewing coffe for {caffe_brew_time}s ...")
+            print(f"Worker {worker_id} brewing coffee for {caffe_brew_time}s ...")
             await asyncio.sleep(caffe_brew_time)
 
             async with session.post(urljoin(BASE_SERVER_URL, f"/finish/?order_id={order_id}")) as resp:
@@ -47,4 +47,5 @@ async def simulate_workers(num_workers: int) -> None:
 
 
 if __name__ == "__main__":
+    print(f"Client sending requests to: {BASE_SERVER_URL}")
     asyncio.run(simulate_workers(NUM_WORKERS))
